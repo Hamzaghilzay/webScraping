@@ -1,6 +1,7 @@
-
 import requests
 from bs4 import BeautifulSoup
+import json
+
 HEADERS = {
     "accept": "*/*",
     "accept-encoding": "gzip, deflate, br, zstd",
@@ -12,6 +13,6 @@ url = "https://www.walmart.com/ip/Packard-Bell-airFrame-21-Inch-Monitor-FHD-1920
 response = requests.get(url, headers = HEADERS)
 soup = BeautifulSoup(response.text, "lxml")
 script_tag = soup.find("script", id="__NEXT_DATA__")
-print(script_tag)
-#print(html)
-
+data = json.loads(script_tag.string)
+initial_data = data["props"]["pageProps"]["initialData"]["data"]["product"]["priceInfo"]["currentPrice"]
+print(initial_data.keys())
