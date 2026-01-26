@@ -1,3 +1,4 @@
+
 import requests
 from bs4 import BeautifulSoup
 HEADERS = {
@@ -13,3 +14,4 @@ soup = BeautifulSoup(response.text, "lxml")
 script_tag = soup.find("script", id="__NEXT_DATA__")
 print(script_tag)
 #print(html)
+
