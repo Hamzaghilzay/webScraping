@@ -13,6 +13,24 @@ url = "https://www.walmart.com/ip/Packard-Bell-airFrame-21-Inch-Monitor-FHD-1920
 response = requests.get(url, headers = HEADERS)
 soup = BeautifulSoup(response.text, "lxml")
 script_tag = soup.find("script", id="__NEXT_DATA__")
+
 data = json.loads(script_tag.string)
-initial_data = data["props"]["pageProps"]["initialData"]["data"]["product"]["priceInfo"]["currentPrice"]
-print(initial_data.keys())
+def product_info(data):
+            initial_data = data["props"]["pageProps"]["initialData"]["data"]
+            product_data = initial_data["product"]
+            reviews_data = initial_data.get("reviews", {})
+
+            product_info = {
+                "price": product_data["priceInfo"]["currentPrice"]["price"],
+                "review_count": reviews_data.get("totalReviewCount", 0),
+                "item_id": product_data["usItemId"],
+                "avg_rating": reviews_data.get("averageOverallRating", 0),
+                "product_name": product_data["name"],
+                "brand": product_data.get("brand", ""),
+                "availability": product_data["availabilityStatus"],
+                "image_url": product_data["imageInfo"]["thumbnailUrl"],
+                "short_description": product_data.get("shortDescription", "")
+            }
+
+            return product_info
+print(product_info(data))
